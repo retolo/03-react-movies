@@ -2,16 +2,10 @@
 import { createPortal } from 'react-dom'
 import css from './MovieModal.module.css'
 import type React from 'react'
-
+import { type Movie } from '../../types/movie'
 import { useEffect } from 'react'
 
-interface Movie{
-  title: string
-  release_date: string
-  overview: string
-  vote_average: number
-  backdrop_path: string 
-}
+
 
 interface MovieModalProps{
     onClose: () => void

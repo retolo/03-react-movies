@@ -1,13 +1,9 @@
 import css from './MovieGrid.module.css'
+import {type Movie } from '../../types/movie'
 
 
 
 
-interface Movie {
-    id: number
-    title: string
-    poster_path: string
-}
 
 
 interface MovieGridProps{

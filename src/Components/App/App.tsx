@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import { type Movie } from "../../types/movie";
@@ -63,21 +63,25 @@ export default function App(){
             }
 
             
-            } catch (error: any)  {
-                
-                toast(error.toString())
-                setError(error.toString())
-                
-                
-            }
-            finally{
+            } catch (err) {
+                let errorMessage = 'An unknown error occurred.';
+                if (axios.isAxiosError(err)) {
+                  if (err.response) {
+                    errorMessage = err.response.data?.status_message || err.message;
+                  } else if (err.request) {
+                    errorMessage = 'No response from server. Check your internet connection.';
+                  } else {
+                    errorMessage = err.message;
+                  }
+                } else {
+                  errorMessage = String(err);
+                }
+                toast(errorMessage);
+                setError(errorMessage);
+              } finally {
                 setIsLoading(false);
+              }
             }
-            
-
-        
-            
-        }
         
         GetRequest();
 
