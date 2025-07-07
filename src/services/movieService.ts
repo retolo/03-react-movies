@@ -1,28 +1,30 @@
-import { useEffect, useState } from "react";
+
 import axios from "axios";
 import toast from 'react-hot-toast';
 
 import { type Movie } from "../types/movie";
+interface AppGetResults{
+  results: Movie[]
+}
 
-export default function FetchMovies(){
+export default async function FetchMovies(queryUser: string): Promise<Movie[]>{
 
-    const [isloading, setIsLoading] = useState(true);
-    const [movies, setMovies] = useState<Movie[]>([]);
-    const [queryPer, setQuerys] = useState('');
-    const [error, setError] = useState('');
-    useEffect(() =>{
-        async function GetRequest() {
+    
+    
+    
+    
+    
+        
             try {
-                setIsLoading(true);
-                setError('');
-                const response = await axios({
+                
+                const response = await axios<AppGetResults>({
                     method: 'GET',
                     url: 'https://api.themoviedb.org/3/search/movie',
     
                     params: {
                         include_adult: false,
                         language: 'en-US',
-                        query: queryPer,
+                        query: queryUser,
     
     
                     },
@@ -34,44 +36,22 @@ export default function FetchMovies(){
                 }
                 
             );
-            setMovies(response.data.results);
+            
             if(response.data.results.length === 0){
                 toast('No movies found for your request.');
     
             }
+            return response.data.results;
+              
+            
 
             
-            } catch (err) {
-                let errorMessage = 'An unknown error occurred.';
-                if (axios.isAxiosError(err)) {
-                  if (err.response) {
-                    errorMessage = err.response.data?.status_message || err.message;
-                  } else if (err.request) {
-                    errorMessage = 'No response from server. Check your internet connection.';
-                  } else {
-                    errorMessage = err.message;
-                  }
-                } else {
-                  errorMessage = String(err);
-                }
-                toast(errorMessage);
-                setError(errorMessage);
-              } finally {
-                setIsLoading(false);
+            }catch (error) {
+              if (axios.isAxiosError(error)) {
+                const apiMessage = error.response?.data?.status_message;
+                throw new Error(apiMessage || error.message);
+              } else {
+                throw new Error(String(error));
               }
             }
-        
-        GetRequest();
-
-    }, [queryPer])
-
-
-
-    return{
-        Error: error,
-        Movies: movies,
-        SetQuerys: setQuerys,
-        ISLoading: isloading
-
-    }
-}
+          }

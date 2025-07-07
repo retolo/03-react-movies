@@ -10,9 +10,9 @@ export default function SearchBar({onSubmit}: SearchBarProps){
 
 
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
-        event.preventDefault();
-        event.currentTarget.reset()
+    const handleSubmit = (_formData: FormData) =>{
+        
+        
         onSubmit(inputValue);
     }
 
@@ -42,7 +42,7 @@ export default function SearchBar({onSubmit}: SearchBarProps){
          >
          Powered by TMDB
          </a>
-         <form onSubmit={handleSubmit} className={styles.form}>
+         <form action={handleSubmit} onSubmit={notify} className={styles.form}>
          <input
          className={styles.input}
          type="text"
@@ -54,7 +54,7 @@ export default function SearchBar({onSubmit}: SearchBarProps){
          
          
          />
-         <button onClick={notify} className={styles.button} type="submit">
+         <button  className={styles.button} type="submit">
         <Toaster/>
          Search
          </button>

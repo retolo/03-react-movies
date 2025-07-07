@@ -9,9 +9,9 @@ import { useEffect } from 'react'
 
 interface MovieModalProps{
     onClose: () => void
-    movies: Movie
+    movie: Movie
 }
-export default function MovieModal({movies, onClose}: MovieModalProps){
+export default function MovieModal({movie, onClose}: MovieModalProps){
 
 
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) =>{
@@ -43,24 +43,25 @@ export default function MovieModal({movies, onClose}: MovieModalProps){
               &times;
             </button>
             <img
-              src={`https://image.tmdb.org/t/p/w500/${movies.backdrop_path}`}
+              src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
               alt="movie_title"
               className={css.image}
             />
             <div className={css.content}>
-              <h2>{movies.title}</h2>
-              <p>{movies.overview}</p>
+              <h2>{movie.title}</h2>
+              <p>{movie.overview}</p>
               <p>
-                <strong>Release Date:</strong> {movies.release_date}
+                <strong>Release Date:</strong> {movie.release_date}
               </p>
               <p>
-                <strong>Rating:</strong> {movies.vote_average}/10
+                <strong>Rating:</strong> {movie.vote_average}/10
               </p>
             </div>
           </div>
         </div>,
 
-        document.body
+        document.body,
+        document.body.style.overflow = 'hidden'
 
       )
 }

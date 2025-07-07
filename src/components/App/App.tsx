@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import SearchBar from "../SearchBar/SearchBar";
 import { type Movie } from "../../types/movie";
@@ -11,11 +11,38 @@ import FetchMovies from "../../services/movieService";
 
 export default function App(){
 
+    const [movies, setMovies] = useState<Movie[]>([]);
+    const [queryPer, setQuerys] = useState('');
+    const [error, setError] = useState('');
+    const [isloading, setIsLoading] = useState(true);
     
-    const https = FetchMovies();
+    
+
     
     
-    
+    useEffect(() =>{
+
+        const fetchData = async () =>{
+            setIsLoading(true);
+            setError('');
+
+            try {
+                const result = await FetchMovies(queryPer);
+                setMovies(result)
+            } catch (error) {
+                setError((error as Error).message)
+                
+            } finally{
+                setIsLoading(false)
+            }
+        }
+
+
+        fetchData();
+        
+
+        
+    }, [queryPer])
     
     
     const [isModalOpen, setIsModalopen] = useState(false);
@@ -43,19 +70,19 @@ export default function App(){
 
     return(
         <>
-            <SearchBar onSubmit={https.SetQuerys}/>
+            <SearchBar onSubmit={setQuerys}/>
             <Toaster/>
 
-            {https.ISLoading && <Loader/>}
-            {https.Error.length !== 0 &&
+            {isloading && <Loader/>}
+            {error.length !== 0 &&
                 <ErrorMessage/>
             }
 
-            {!https.ISLoading && https.Error.length === 0 && https.Movies.length > 0 &&
-                <MovieGrid onSelect={handleMovieSelect} movies={https.Movies}/>
+            {!isloading && error.length === 0 && movies.length > 0 &&
+                <MovieGrid onSelect={handleMovieSelect} movies={movies}/>
             }
             {isModalOpen && selectedMovie && (
-                <MovieModal movies={selectedMovie} onClose={handleCloseModal}/>
+                <MovieModal movie={selectedMovie} onClose={handleCloseModal}/>
             )}
              
              
