@@ -8,13 +8,14 @@ import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import MovieModal from "../MovieModal/MovieModal";
 import fetchMovies from "../../services/movieService";
+import { Axios } from "axios";
 
 export default function App(){
 
     const [movies, setMovies] = useState<Movie[]>([]);
-    const [queryPer, setQuerys] = useState('');
+    const [querys, setQuerys] = useState<string>('');
     const [error, setError] = useState('');
-    const [isloading, setIsLoading] = useState(true);
+    const [isloading, setIsLoading] = useState(false);
     
     
 
@@ -24,12 +25,14 @@ export default function App(){
 
         const fetchData = async () =>{
             setIsLoading(true);
-            setError('');
+            
 
             try {
-                if(queryPer !== ''){
-                    const result = await fetchMovies(queryPer);
+                if(querys !== ''){
                     setMovies([]);
+                    setError('');
+                    const result = await fetchMovies(querys);
+                    
                     if(result.length === 0){
                         toast('No movies found for your request.');
             
@@ -40,13 +43,15 @@ export default function App(){
                 
                 
             } catch (error) {
-                if(error === Error){
-                    setError((error as Error).message)
-                }
-                
-            } finally{
-                setIsLoading(false)
-            }
+              if (error instanceof Error) {
+                  setError(error.message);
+              } else {
+                  setError(String(error));
+              }
+          } finally {
+              setIsLoading(false);
+          }
+          
         }
 
 
@@ -54,21 +59,21 @@ export default function App(){
         
 
         
-    }, [queryPer])
+    }, [querys])
     
     
-    const [isModalOpen, setIsModalopen] = useState(false);
+    
     
     const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
 
 
     const handleMovieSelect = (movie: Movie) =>{
         setSelectedMovie(movie);
-        setIsModalopen(true);
+        
     }
 
     const handleCloseModal = () =>{
-        setIsModalopen(false);
+        
         setSelectedMovie(null);
     }
 
@@ -94,7 +99,7 @@ export default function App(){
               {movies.length > 0 && (
                 <MovieGrid onSelect={handleMovieSelect} movies={movies} />
               )}
-              {isModalOpen && selectedMovie && (
+              {selectedMovie !== null && (
                 <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
               )}
             </>

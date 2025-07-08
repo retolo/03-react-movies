@@ -13,8 +13,11 @@ export default function SearchBar({onSubmit}: SearchBarProps){
         if(inputValue === '' || inputValue === null){
             toast('Please enter your search query.');
         }
+        if(inputValue !== null){
+            onSubmit(String(inputValue));
+        }
         
-        onSubmit(String(inputValue));
+        
     }
 
 
