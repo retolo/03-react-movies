@@ -33,6 +33,7 @@ export default function MovieModal({movie, onClose}: MovieModalProps){
 
     return () =>{
       document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden'
     }
   }, [onClose])
     return createPortal(
@@ -60,8 +61,8 @@ export default function MovieModal({movie, onClose}: MovieModalProps){
           </div>
         </div>,
 
-        document.body,
-        document.body.style.overflow = 'hidden'
+        document.body
+        
 
       )
 }

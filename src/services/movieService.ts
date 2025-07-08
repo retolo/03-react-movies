@@ -1,16 +1,16 @@
 
 import axios from "axios";
-import toast from 'react-hot-toast';
+
 
 import { type Movie } from "../types/movie";
 interface AppGetResults{
   results: Movie[]
 }
 
-export default async function FetchMovies(queryUser: string): Promise<Movie[]>{
+export default async function fetchMovies(queryUser: string): Promise<Movie[]>{
 
     
-    
+    const mykey = import.meta.env.VITE_TMDB_TOKEN
     
     
     
@@ -30,17 +30,14 @@ export default async function FetchMovies(queryUser: string): Promise<Movie[]>{
                     },
                     headers:{
                         accept: 'application/json',
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkOWYwNTA1OTU5MjM2ZTk0ZTllYTA0YTgyM2ZiOTc5ZCIsIm5iZiI6MTc1MTgwNjI3OS4zMjE5OTk4LCJzdWIiOiI2ODZhNzE0NzRhNGI0NGEwZGFhOTU4MGEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.niMU6LEEGor84BlXiA8ReugMPcFKgiu55i2dazF051s`,
+                        Authorization: `Bearer ${mykey}`,
                     }
                     
                 }
                 
             );
             
-            if(response.data.results.length === 0){
-                toast('No movies found for your request.');
-    
-            }
+            
             return response.data.results;
               
             
