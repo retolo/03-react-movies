@@ -8,7 +8,7 @@ import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import MovieModal from "../MovieModal/MovieModal";
 import fetchMovies from "../../services/movieService";
-import { Axios } from "axios";
+
 
 export default function App(){
 
