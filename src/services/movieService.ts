@@ -17,11 +17,11 @@ export default async function fetchMovies(queryUser: string): Promise<Movie[]>{
         
             try {
                 
-                const response = await axios<AppGetResults>({
-                    method: 'GET',
-                    url: 'https://api.themoviedb.org/3/search/movie',
+                const response = await axios.get<AppGetResults>(
+                    
+                    'https://api.themoviedb.org/3/search/movie',
     
-                    params: {
+                    {params: {
                         include_adult: false,
                         language: 'en-US',
                         query: queryUser,
@@ -31,9 +31,9 @@ export default async function fetchMovies(queryUser: string): Promise<Movie[]>{
                     headers:{
                         accept: 'application/json',
                         Authorization: `Bearer ${mykey}`,
-                    }
+                    }}
                     
-                }
+                
                 
             );
             
